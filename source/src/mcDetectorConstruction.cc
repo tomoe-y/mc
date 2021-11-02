@@ -62,7 +62,7 @@ G4VPhysicalVolume* mcDetectorConstruction::Construct()
     // World
     solidWorld = new G4Orb("World",WorldRadius);
     logicWorld = new G4LogicalVolume(solidWorld,     //its solid
-                                     defaultMaterial,//its material
+                                    defaultMaterial,//its material
                                      "World");		 //its name
     
     physWorld = new G4PVPlacement(0,			     //no rotation
@@ -77,19 +77,57 @@ G4VPhysicalVolume* mcDetectorConstruction::Construct()
     solidSensor = new G4Tubs("Sensor", 0, sensorRadius, sensorHeight/2., 0, CLHEP::twopi);
     logicSensor = new G4LogicalVolume(solidSensor,sensorMaterial,"Sensor");
     
-    physSensor = new G4PVPlacement(0,G4ThreeVector(0, 0, 2.0*m+sensorHeight/2.),logicSensor,"Sensor",logicWorld,false,1);
+    //physSensor = new G4PVPlacement(0,G4ThreeVector(0, 0, 2.0*m+sensorHeight/2.),logicSensor,"Sensor",logicWorld,false,1);
     //physSensor = new G4PVPlacement(0,G4ThreeVector(20*cm,0,0),logicSensor,"Sensor",logicWorld,false,2);
     //physSensor = new G4PVPlacement(0,G4ThreeVector(40*cm,0,0),logicSensor,"Sensor",logicWorld,false,3);
 
     solidShield = new G4Box("Shield", 1.0*m, 1.0*m, shieldThickness/2.);
     logicShield = new G4LogicalVolume(solidShield, shieldMaterial, "Shield");
-    physShield =  new G4PVPlacement(0, G4ThreeVector(0, 0, 1.0*m+shieldThickness/2.), logicShield, "Shield", logicWorld, false, 101);
+    //physShield =  new G4PVPlacement(0, G4ThreeVector(0, 0, 1.0*m+shieldThickness/2.), logicShield, "Shield", logicWorld, false, 101);
 
     //add
-    //G4double length_target_to_quartz = 1.0 *m;
-    G4Box* new_solid = new G4Box("box", 0.5*m, 0.5*m, shieldThickness*2.);
-    G4LogicalVolume* new_logic = new G4LogicalVolume(new_solid, shieldMaterial, "box");
-    G4PVPlacement* newphys = new G4PVPlacement(0, G4ThreeVector(), new_logic, "box", logicWorld, false, 101);
+    G4double new_solid_x = 50.*cm;
+    G4double new_solid_y = 50.*cm;
+    G4double new_solid_z = 50.*cm;
+    G4Box* new_solid = new G4Box("box", new_solid_x, new_solid_y, new_solid_z);
+    G4LogicalVolume* new_logic = new G4LogicalVolume(new_solid, G4Material::GetMaterial("Lead"), "box");
+    //G4PVPlacement* newphys = new G4PVPlacement(0, G4ThreeVector(), new_logic, "box", logicWorld, true, 101);
+
+    G4double target_x = 10*cm;
+    G4double target_y = 10*cm;
+    G4double target_z = 10*cm;
+    G4double quartz_x = 5*cm;
+    G4double quartz_y = 30*cm;
+    G4double quartz_z = 30*cm;
+    G4double calori_x = 50*cm;
+    G4double calori_y = 50*cm;
+    G4double calori_z = 50*cm;
+    G4double length_target_to_quartz = 1.0 *m;
+    G4double length_target_to_calorimeter = 2.0*m;
+
+    //target
+    G4Box* solid_target = new G4Box("target", target_x, target_y, target_z);
+    G4LogicalVolume* logic_target = new G4LogicalVolume(solid_target, G4Material::GetMaterial("Aluminium"), "target");
+    G4PVPlacement* target_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), logic_target, "target", logicWorld, false, 102);
+    
+    //quartz
+    G4Box* solid_quartz = new G4Box("quartz", quartz_x, quartz_y, quartz_z);
+    G4LogicalVolume* logic_quartz = new G4LogicalVolume(solid_quartz, G4Material::GetMaterial("SiO2"), "quartz");
+    //G4PVPlacement* quartz_phys = new G4PVPlacement(0, G4ThreeVector(length_target_to_quartz, 0, 0), logic_quartz, "quartz", logicWorld, false, 103);
+
+    //calorimeter
+    G4Box* solid_calori = new G4Box("calorimeter", calori_x, calori_y, calori_z);
+    G4LogicalVolume* logic_calori = new G4LogicalVolume(solid_calori, G4Material::GetMaterial("Lead"), "calorimeter");
+    //G4PVPlacement* calori_phys = new G4PVPlacement(0, G4ThreeVector(length_target_to_calorimeter, 0, 0), logic_calori, "calorimeter", logicWorld, false, 104);
+
+    //scintillator
+    G4double scinti_x = 5*cm;
+    G4double scinti_y = 30*cm;
+    G4double scinti_z = 30*cm;
+
+    G4Box* solid_scinti = new G4Box("scintillator", scinti_x, scinti_y, scinti_z);
+    G4LogicalVolume* logic_scinti = new G4LogicalVolume(solid_scinti, G4Material::GetMaterial("NaI"), "scintillator");
+    G4PVPlacement* scinti_phys = new G4PVPlacement(0, G4ThreeVector(target_x + scinti_x , 0, 0), logic_scinti, "scintillator", logicWorld, false, 105);
 
     //------------------------------------------------
     // Sensitive detectors
@@ -103,8 +141,9 @@ G4VPhysicalVolume* mcDetectorConstruction::Construct()
     }
     aSensorSD->SetAnalyzer(analyzer);
     
-    logicSensor->SetSensitiveDetector(aSensorSD);
-    
+    //logicSensor->SetSensitiveDetector(aSensorSD);
+    logic_scinti->SetSensitiveDetector(aSensorSD);
+
     // Set UserLimits
     G4double maxTrkLen = 10.0*WorldRadius;
     G4double maxTime   = 1000.0 * ns;
@@ -183,6 +222,7 @@ void mcDetectorConstruction::DefineMaterials()
     new G4Material("liquidArgon", z=18., a= 39.95*g/mole, density= 1.390*g/cm3);
     new G4Material("Lead"     , z=82., a= 207.19*g/mole, density= 11.35*g/cm3);
     new G4Material("Tungsten" , z=74., a= 183.84*g/mole, density= 19.25*g/cm3);
+    new G4Material("Aluminium", z= 13., a= 26.98*g/mole, density= 2.7*g/cm3);
     
     // define a material from elements.   case 1: chemical molecule
     
