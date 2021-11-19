@@ -32,7 +32,11 @@
 int main(int argc,char** argv)
 {
     // Detect interactive mode (if no arguments) and define UI session
-    //
+
+    if ((argc!=1) & (argc!=3)){
+        G4cout << "Error " << G4endl;
+        G4cout << "Use ./mc or ./mc <outfilename> <macro>" << G4endl;
+    }
     G4UIExecutive* ui = 0;
     if ( argc == 1 ) {
         ui = new G4UIExecutive(argc, argv);
@@ -46,7 +50,13 @@ int main(int argc,char** argv)
     
     // Construct the analyzer
     mcAnalyzer* analyzer = new mcAnalyzer();
-    analyzer->SetInit(true, "out.root");
+    G4String outfilename;
+    if(argc==1){
+        outfilename = "out.root";
+    }else if (argc==3){
+        outfilename = argv[1];
+    }
+    analyzer->SetInit(true, outfilename);
     analyzer->Init();
     
     // Set mandatory initialization classes
@@ -90,7 +100,7 @@ int main(int argc,char** argv)
     if ( ! ui ) {
         // batch mode
         G4String command = "/control/execute ";
-        G4String fileName = argv[1];
+        G4String fileName = argv[2];
         UImanager->ApplyCommand(command+fileName);
     }
     else {

@@ -93,9 +93,9 @@ G4VPhysicalVolume* mcDetectorConstruction::Construct()
     G4LogicalVolume* new_logic = new G4LogicalVolume(new_solid, G4Material::GetMaterial("Lead"), "box");
     //G4PVPlacement* newphys = new G4PVPlacement(0, G4ThreeVector(), new_logic, "box", logicWorld, true, 101);
 
-    G4double target_x = 10*cm;
-    G4double target_y = 10*cm;
-    G4double target_z = 10*cm;
+    G4double target_x = 100*cm;
+    G4double target_y = 100*cm;
+    G4double target_z = 100*cm;
     G4double quartz_x = 5*cm;
     G4double quartz_y = 30*cm;
     G4double quartz_z = 30*cm;
@@ -107,12 +107,12 @@ G4VPhysicalVolume* mcDetectorConstruction::Construct()
 
     //target
     G4Box* solid_target = new G4Box("target", target_x, target_y, target_z);
-    G4LogicalVolume* logic_target = new G4LogicalVolume(solid_target, G4Material::GetMaterial("Aluminium"), "target");
-    G4PVPlacement* target_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 0), logic_target, "target", logicWorld, false, 102);
+    G4LogicalVolume* logic_target = new G4LogicalVolume(solid_target, G4Material::GetMaterial("Scintillator"), "target");
+    G4PVPlacement* target_phys = new G4PVPlacement(0, G4ThreeVector(0, 0, 100), logic_target, "target", logicWorld, false, 102);
     
     //quartz
     G4Box* solid_quartz = new G4Box("quartz", quartz_x, quartz_y, quartz_z);
-    G4LogicalVolume* logic_quartz = new G4LogicalVolume(solid_quartz, G4Material::GetMaterial("SiO2"), "quartz");
+    G4LogicalVolume* logic_quartz = new G4LogicalVolume(solid_quartz, G4Material::GetMaterial("quartz"), "quartz");
     //G4PVPlacement* quartz_phys = new G4PVPlacement(0, G4ThreeVector(length_target_to_quartz, 0, 0), logic_quartz, "quartz", logicWorld, false, 103);
 
     //calorimeter
@@ -127,7 +127,7 @@ G4VPhysicalVolume* mcDetectorConstruction::Construct()
 
     G4Box* solid_scinti = new G4Box("scintillator", scinti_x, scinti_y, scinti_z);
     G4LogicalVolume* logic_scinti = new G4LogicalVolume(solid_scinti, G4Material::GetMaterial("NaI"), "scintillator");
-    G4PVPlacement* scinti_phys = new G4PVPlacement(0, G4ThreeVector(target_x + scinti_x , 0, 0), logic_scinti, "scintillator", logicWorld, false, 105);
+    //G4PVPlacement* scinti_phys = new G4PVPlacement(0, G4ThreeVector(target_x + scinti_x , 0, 0), logic_scinti, "scintillator", logicWorld, false, 105);
 
     //------------------------------------------------
     // Sensitive detectors
@@ -142,7 +142,7 @@ G4VPhysicalVolume* mcDetectorConstruction::Construct()
     aSensorSD->SetAnalyzer(analyzer);
     
     //logicSensor->SetSensitiveDetector(aSensorSD);
-    logic_scinti->SetSensitiveDetector(aSensorSD);
+    logic_target->SetSensitiveDetector(aSensorSD);
 
     // Set UserLimits
     G4double maxTrkLen = 10.0*WorldRadius;

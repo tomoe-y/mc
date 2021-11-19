@@ -61,8 +61,8 @@ G4bool mcSensorSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
     
     //if ( aTrack->GetDefinition()->GetPDGCharge() == 0.0) return false;
     //G4cout << aTrack->GetDefinition()->GetPDGEncoding() << G4endl;
-    // Sensitive to neutron only
-    //if ( aTrack->GetDefinition()->GetPDGEncoding() != 2112) return false;
+    // Sensitive to except muon
+    if ( aTrack->GetDefinition()->GetPDGEncoding() == 13) return false;
     
     //Check Energy deposit
     G4double eLoss = aStep->GetTotalEnergyDeposit();
