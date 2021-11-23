@@ -36,10 +36,12 @@ void showParticleName(
     }
 
     // output count results while convert PDGcode into particle name
+    Double_t n_entries = chain->GetEntries();
+    cout << "All" << "\t" << n_entries << endl;
     TDatabasePDG* pdg = new TDatabasePDG();
     for (auto itr = n_particles.begin(); itr != n_particles.end(); ++itr){
         if (itr->first > 1000000000) continue;
-        cout << pdg->GetParticle(itr->first)->GetName() << "\t" << itr->second << endl;
+        cout << pdg->GetParticle(itr->first)->GetName() << "\t" << itr->second << "\t" << 1/(itr->second/n_entries) << endl;
     }
 
 }
