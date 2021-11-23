@@ -28,7 +28,10 @@ bench/calcTotalEdep.C
 __pycache__
 
 # ignore generated png/gif
-*img*
+*img_*
 
 # vscode settings
 .vscode
+
+# nohup
+*/nohup*.out
