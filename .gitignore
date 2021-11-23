@@ -26,3 +26,6 @@ bench/calcTotalEdep.C
 
 # ignore generated png/gif
 *img*
+
+# vscode settings
+.vscode
