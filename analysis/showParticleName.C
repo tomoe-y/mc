@@ -1,8 +1,11 @@
 void showParticleName(
     TString file_path = "/home/tomoe/mc/bench/test0.root"
 ){
-    auto file = new TFile(file_path);
-    TTreeReader reader("tree", file);
+    
+    TChain* chain = new TChain("tree");
+    chain->Add(file_path);
+
+    TTreeReader reader(chain);
 
     TTreeReaderValue<int> nHit(reader, "nHit");
     TTreeReaderArray<int> particleID(reader, "particle");

@@ -11,3 +11,7 @@ root [0] .x showParticleName.C("/path/to/rootfile")
 ```bash
 [user@host mc]$ root 'showParticleName.C("/path/to/rootfile")'
 ```
+- TChainでファイルの読み込みを行っているので引数にワイルドカードを使える
+```bash
+[user@host mc]$ root 'showParticleName.C("/path/to/test_*.root")'
+```
