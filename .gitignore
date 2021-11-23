@@ -23,3 +23,6 @@ cmake_install.cmake/*
 hand/*
 
 bench/calcTotalEdep.C
+
+# ignore generated png/gif
+*img*
