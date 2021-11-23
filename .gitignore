@@ -24,6 +24,9 @@ hand/*
 
 bench/calcTotalEdep.C
 
+# python
+__pycache__
+
 # ignore generated png/gif
 *img*
 
