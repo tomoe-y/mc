@@ -23,3 +23,15 @@ cmake_install.cmake/*
 hand/*
 
 bench/calcTotalEdep.C
+
+# python
+__pycache__
+
+# ignore generated png/gif
+*img_*
+
+# vscode settings
+.vscode
+
+# nohup
+*/nohup*.out
