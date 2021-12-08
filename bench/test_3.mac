@@ -1,0 +1,9 @@
+/run/setCut 1 m
+/gun/position 16 14 -50 cm
+/gun/direction 0 0 1
+/gun/particle mu-
+/gun/energy 1.7 GeV
+
+/run/initialize
+
+/run/beamOn 1000000
