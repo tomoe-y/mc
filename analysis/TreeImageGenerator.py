@@ -37,12 +37,16 @@ class TreeImageGenerator():
         self.i_entry = i
         self.chain.GetEntry(self.i_entry)
         
-    def search_spesific_event(self):
+    def is_specific_event(self):
+        flag = (111 in self.chain.particle) or (211 in self.chain.particle) or (-211 in self.chain.particle)
+        return flag
+        
+    def search_specific_event(self):
         print('searching reasonable events')
         for i in tqdm.tqdm(range(self.chain.GetEntries())):
             self.chain.GetEntry(i)
             #if len(self.chain.x) < 4: continue
-            flag = (111 in self.chain.particle) or (211 in self.chain.particle) or (-211 in self.chain.particle)
+            flag = self.is_specific_event()
             if not flag: continue
             self.drawable_event_indexs.append(i)
         print('{0}/{1} event was found'.format(len(self.drawable_event_indexs), self.chain.GetEntries()))
