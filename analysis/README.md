@@ -27,6 +27,10 @@ root [0] .x showParticleName.C("/path/to/rootfile")
 - ほとんどTTree::GetEntry()
 ### TreeImageGenerator.search_specific_event
 - ある条件を満たすイベントナンバーをメンバ変数 (drawable_event_indexs) にリストとして格納する
+### TreeImageGenerator.is_specific_event
+- 上述のある条件というものを決めている関数
+- デフォルトではpionであることが条件
+- このメンバ関数をオーバーライドすることで、任意の条件のイベントを選び出すことができる
 ### TreeImageGenerator.draw_track
 ```python3
 TreeImageGenerator.draw_track(i: int, is_save_gif=False: bool) -> void:
