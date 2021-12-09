@@ -37,7 +37,7 @@ class TreeImageGenerator():
         self.i_entry = i
         self.chain.GetEntry(self.i_entry)
         
-    def search_spesific_event(self):
+    def search_specific_event(self):
         print('searching reasonable events')
         for i in tqdm.tqdm(range(self.chain.GetEntries())):
             self.chain.GetEntry(i)

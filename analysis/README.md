@@ -25,7 +25,7 @@ root [0] .x showParticleName.C("/path/to/rootfile")
     - ワイルドカード使える
 ### TreeImageGenerator.get_entry
 - ほとんどTTree::GetEntry()
-### TreeImageGenerator.search_spesific_event
+### TreeImageGenerator.search_specific_event
 - ある条件を満たすイベントナンバーをメンバ変数 (drawable_event_indexs) にリストとして格納する
 ### TreeImageGenerator.draw_track
 ```python3
